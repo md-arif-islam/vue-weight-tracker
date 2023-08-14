@@ -6,15 +6,28 @@ const weights = ref([]);
 const weightChartEl = ref(null);
 const weightChart = shallowRef(null);
 const weightInput = ref(60.0);
+
 const currentweight = computed(() => {
   return weights.value.sort((a, b) => b.date - a.date)[0] || { weight: 0 };
 });
+
 const addWeight = () => {
   weights.value.push({
     weight: weightInput.value,
     date: new Date().getTime(),
   });
 };
+
+watch(
+  weights,
+  (newWeights) => {
+    const ws = [...newWeights];
+    nextTick(() => {
+      console.log(weightChartEl);
+    });
+  },
+  { deep: true }
+);
 </script>
 
 <template>
