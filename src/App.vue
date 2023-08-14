@@ -1,8 +1,8 @@
 <script setup>
-import { ref, shallowRef, computed, watch, nextTick } from "vue";
+import { ref, shallowRef, computed, watch, nextTick, onMounted } from "vue";
 import Chart from "chart.js/auto";
 
-const weights = ref([]);
+const weights = ref(JSON.parse(localStorage.getItem("weights") || "[]"));
 const weightChartEl = ref(null);
 const weightChart = shallowRef(null);
 const weightInput = ref(60.0);
@@ -18,55 +18,66 @@ const addWeight = () => {
   });
 };
 
+const initializeChart = (newWeights) => {
+  const ws = [...newWeights];
+
+  if (weightChart.value) {
+    weightChart.value.data.labels = ws
+      .sort((a, b) => a.date - b.date)
+      .map((weight) => new Date(weight.date).toLocaleDateString())
+      .slice(-7);
+
+    weightChart.value.data.datasets[0].data = ws
+      .sort((a, b) => a.date - b.date)
+      .map((weight) => weight.weight)
+      .slice(-7);
+
+    weightChart.value.update();
+    return;
+  }
+
+  nextTick(() => {
+    weightChart.value = new Chart(weightChartEl.value.getContext("2d"), {
+      type: "line",
+      data: {
+        labels: ws
+          .sort((a, b) => a.date - b.date)
+          .map((weight) => new Date(weight.date).toLocaleDateString()),
+        datasets: [
+          {
+            label: "Weight",
+            data: ws
+              .sort((a, b) => a.date - b.date)
+              .map((weight) => weight.weight),
+            backgroundColor: "rgba(0, 255, 0, 0.2)",
+            borderColor: "rgba(0, 255, 0, 1)",
+            borderWidth: 1,
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+  });
+};
+
 watch(
   weights,
   (newWeights) => {
-    const ws = [...newWeights];
-
-    if (weightChart.value) {
-      weightChart.value.data.labels = ws
-        .sort((a, b) => a.date - b.date)
-        .map((weight) => new Date(weight.date).toLocaleDateString())
-        .slice(-7);
-
-      weightChart.value.data.datasets[0].data = ws
-        .sort((a, b) => a.date - b.date)
-        .map((weight) => weight.weight)
-        .slice(-7);
-
-      weightChart.value.update();
-      return;
-    }
-
-    nextTick(() => {
-      weightChart.value = new Chart(weightChartEl.value.getContext("2d"), {
-        type: "line",
-        data: {
-          labels: ws
-            .sort((a, b) => a.date - b.date)
-            .map((weight) => new Date(weight.date).toLocaleDateString()),
-          datasets: [
-            {
-              label: "Weight",
-              data: ws
-                .sort((a, b) => a.date - b.date)
-                .map((weight) => weight.weight),
-              backgroundColor: "rgba(0, 128, 0, 0.2)",
-              borderColor: "rgba(0, 128, 0, 1)",
-              borderWidth: 1,
-              fill: true,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-      });
-    });
+    localStorage.setItem("weights", JSON.stringify(newWeights));
+    initializeChart(newWeights);
   },
   { deep: true }
 );
+
+onMounted(() => {
+  if (weights.value.length > 0) {
+    initializeChart(weights.value);
+  }
+});
 </script>
 
 <template>
@@ -83,7 +94,7 @@ watch(
       <input type="submit" value="Add Weight" />
     </form>
 
-    <div v-if="weights && weights.length > 0">
+    <div>
       <h2>Last 7 days</h2>
 
       <div class="canvas-box">
