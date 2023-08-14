@@ -18,6 +18,11 @@ const addWeight = () => {
   });
 };
 
+const resetWeightsValue = () => {
+  weights.value = [];
+  localStorage.setItem("weights", JSON.stringify(weights));
+};
+
 const initializeChart = (newWeights) => {
   const ws = [...newWeights];
 
@@ -96,6 +101,7 @@ onMounted(() => {
 
     <div>
       <h2>Last 7 days</h2>
+      <button @click="resetWeightsValue">Reset</button>
 
       <div class="canvas-box">
         <canvas ref="weightChartEl"></canvas>
