@@ -51,8 +51,8 @@ watch(
               data: ws
                 .sort((a, b) => a.date - b.date)
                 .map((weight) => weight.weight),
-              backgroundColor: "rgba(255, 105, 180, 0.2)",
-              borderColor: "rgba(255, 105, 180, 1)",
+              backgroundColor: "rgba(0, 128, 0, 0.2)",
+              borderColor: "rgba(0, 128, 0, 1)",
               borderWidth: 1,
               fill: true,
             },
@@ -71,7 +71,7 @@ watch(
 
 <template>
   <main>
-    <h1>weight Tracker</h1>
+    <h1>Weight Tracker</h1>
 
     <div class="current">
       <span>{{ currentweight.weight }}</span>
@@ -144,7 +144,7 @@ h2 {
   background-color: white;
   border-radius: 999px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 5px solid hwb(330 41% 0%);
+  border: 5px solid #008000;
 
   margin: 0 auto 2rem;
 }
@@ -172,7 +172,7 @@ form {
 
 form:focus-within,
 form:hover {
-  border-color: hotpink;
+  border-color: #008000;
   border-width: 2px;
 }
 
@@ -192,7 +192,7 @@ form input[type="submit"] {
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: hotpink;
+  background-color: #008000;
 
   padding: 0.5rem 1rem;
 
@@ -205,8 +205,8 @@ form input[type="submit"] {
 
 form input[type="submit"]:hover {
   background-color: white;
-  color: hotpink;
-  border-left-color: hotpink;
+  color: #008000;
+  border-left-color: #008000;
 }
 
 .canvas-box {
