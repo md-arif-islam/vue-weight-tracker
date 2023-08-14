@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import { ref, shallowRef, computed, watch, nextTick } from "vue";
+import Chart from "chart.js/auto";
+</script>
 
 <template>
   <div>
