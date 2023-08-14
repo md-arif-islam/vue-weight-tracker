@@ -29,13 +29,11 @@ const initializeChart = (newWeights) => {
   if (weightChart.value) {
     weightChart.value.data.labels = ws
       .sort((a, b) => a.date - b.date)
-      .map((weight) => new Date(weight.date).toLocaleDateString())
-      .slice(-7);
+      .map((weight) => new Date(weight.date).toLocaleDateString());
 
     weightChart.value.data.datasets[0].data = ws
       .sort((a, b) => a.date - b.date)
-      .map((weight) => weight.weight)
-      .slice(-7);
+      .map((weight) => weight.weight);
 
     weightChart.value.update();
     return;
@@ -100,8 +98,10 @@ onMounted(() => {
     </form>
 
     <div>
-      <h2>Last 7 days</h2>
-      <button @click="resetWeightsValue">Reset</button>
+      <div class="d-flex justify-content-between mb-2r">
+        <h2>Last 7 days</h2>
+        <button @click="resetWeightsValue">Reset</button>
+      </div>
 
       <div class="canvas-box">
         <canvas ref="weightChartEl"></canvas>
@@ -147,6 +147,42 @@ h2 {
   color: #888;
   font-weight: 400;
 }
+
+.mb-2r {
+  margin-bottom: 2rem;
+}
+
+/* Bootstrap-like flex utilities */
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+/* Bootstrap-like button styles */
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #008000;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  transition: 200ms linear;
+  border-left: 3px solid transparent;
+}
+
+button:hover {
+  background-color: white;
+  color: #008000;
+  border-left-color: #008000;
+}
+
+/* You can also add focus and active states if desired, but the above should be a good start. */
 
 .current {
   display: flex;
