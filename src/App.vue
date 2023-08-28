@@ -5,17 +5,19 @@ import Chart from "chart.js/auto";
 const weights = ref(JSON.parse(localStorage.getItem("weights") || "[]"));
 const weightChartEl = ref(null);
 const weightChart = shallowRef(null);
-const weightInput = ref(60.0);
+const weightInput = ref(60);
 
 const currentweight = computed(() => {
   return weights.value.sort((a, b) => b.date - a.date)[0] || { weight: 0 };
 });
 
 const addWeight = () => {
-  weights.value.push({
-    weight: weightInput.value,
-    date: new Date().getTime(),
-  });
+  if (weightInput.value != "") {
+    weights.value.push({
+      weight: weightInput.value,
+      date: new Date().getTime(),
+    });
+  }
 };
 
 const resetWeightsValue = () => {
@@ -114,7 +116,7 @@ onMounted(() => {
         />
       </form>
 
-      <div>
+      <div v-show="weights.length">
         <div class="flex justify-between mb-6">
           <h2 class="mb-4 text-gray-500 font-normal">Last 7 days</h2>
           <button
@@ -134,10 +136,7 @@ onMounted(() => {
             Weight History
           </h2>
           <ul class="list-none m-0 p-0">
-            <li
-              class="flex justify-between items-center p-2 cursor-pointer list-item"
-              v-for="weight in weights"
-            >
+            <li class="list-item" v-for="weight in weights">
               <span>{{ weight.weight }}kg</span>
               <small>{{ new Date(weight.date).toLocaleDateString() }}</small>
             </li>
