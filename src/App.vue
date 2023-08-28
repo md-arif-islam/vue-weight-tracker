@@ -84,229 +84,85 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
-    <h1>Weight Tracker</h1>
+  <main class="flex flex-col min-h-screen font-Poppins bg-[#eee] text-center">
+    <div class="container my-12">
+      <h1 class="text-4xl text-center font-bold mb-8">Weight Tracker</h1>
 
-    <div class="current">
-      <span>{{ currentweight.weight }}</span>
-      <small>Current weight (kg)</small>
-    </div>
-
-    <form @submit.prevent="addWeight">
-      <input type="number" step="0.1" v-model="weightInput" />
-      <input type="submit" value="Add Weight" />
-    </form>
-
-    <div>
-      <div class="d-flex justify-content-between mb-2r">
-        <h2>Last 7 days</h2>
-        <button @click="resetWeightsValue">Reset</button>
+      <div
+        class="flex flex-col justify-center items-center w-52 h-52 text-center bg-white rounded-full shadow-md border-4 border-green-500 mx-auto mb-8"
+      >
+        <span class="block text-2xl font-bold mb-2">{{
+          currentweight.weight
+        }}</span>
+        <small class="text-[#888] italic">Current weight (kg)</small>
       </div>
 
-      <div class="canvas-box">
-        <canvas ref="weightChartEl"></canvas>
-      </div>
+      <form
+        @submit.prevent="addWeight"
+        class="flex mb-12 rounded-md overflow-hidden transition-all duration-200 border-white-700"
+      >
+        <input
+          type="number"
+          step="0.1"
+          v-model="weightInput"
+          class="mr-3 appearance-none focus:outline-none border-none bg-white flex-grow p-4 text-xl"
+        />
+        <input
+          type="submit"
+          value="Add Weight"
+          class="appearance-none rounded-md focus:outline-none border-none cursor-pointer bg-green-700 px-4 py-2 text-white text-xl font-bold transition-all duration-200 border-4 border-transparent hover:bg-white hover:text-green-700 hover:border-4 hover:border-green-700"
+        />
+      </form>
 
-      <div class="weight-history">
-        <h2>Weight History</h2>
-        <ul>
-          <li v-for="weight in weights">
-            <span>{{ weight.weight }}kg</span>
-            <small>{{ new Date(weight.date).toLocaleDateString() }}</small>
-          </li>
-        </ul>
+      <div>
+        <div class="flex justify-between mb-6">
+          <h2 class="mb-4 text-gray-500 font-normal">Last 7 days</h2>
+          <button
+            class="focus:outline-none border-0 cursor-pointer bg-green-700 px-4 py-2 text-white text-base font-bold rounded-md transition-all duration-200 border-l-4 border-transparent"
+            @click="resetWeightsValue"
+          >
+            Reset
+          </button>
+        </div>
+
+        <div class="w-full bg-white p-4 rounded-md shadow-md mb-8">
+          <canvas ref="weightChartEl"></canvas>
+        </div>
+
+        <div class="weight-history">
+          <h2 class="mb-4 text-gray-500 font-normal text-left">
+            Weight History
+          </h2>
+          <ul class="list-none m-0 p-0">
+            <li
+              class="flex justify-between items-center p-2 cursor-pointer list-item"
+              v-for="weight in weights"
+            >
+              <span>{{ weight.weight }}kg</span>
+              <small>{{ new Date(weight.date).toLocaleDateString() }}</small>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </main>
 </template>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "montserrat", sans-serif;
+<style scoped>
+/* This is where you combine traditional CSS with Tailwind classes */
+.list-item {
+  @apply flex justify-between items-center p-2 cursor-pointer;
 }
 
-body {
-  background-color: #eee;
+.list-item:nth-child(even) {
+  @apply bg-gray-300;
 }
 
-main {
-  padding: 1.5rem;
+.list-item:hover {
+  @apply hover:bg-gray-200;
 }
 
-h1 {
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-h2 {
-  margin-bottom: 1rem;
-  color: #888;
-  font-weight: 400;
-}
-
-.mb-2r {
-  margin-bottom: 2rem;
-}
-
-/* Bootstrap-like flex utilities */
-.d-flex {
-  display: flex;
-}
-
-.justify-content-between {
-  justify-content: space-between;
-}
-
-/* Bootstrap-like button styles */
-button {
-  outline: none;
-  border: none;
-  cursor: pointer;
-  background-color: #008000;
-  padding: 0.5rem 1rem;
-  color: white;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 10px;
-  transition: 200ms linear;
-  border-left: 3px solid transparent;
-}
-
-button:hover {
-  background-color: white;
-  color: #008000;
-  border-left-color: #008000;
-}
-
-/* You can also add focus and active states if desired, but the above should be a good start. */
-
-.current {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 200px;
-  height: 200px;
-
-  text-align: center;
-  background-color: white;
-  border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 5px solid #008000;
-
-  margin: 0 auto 2rem;
-}
-
-.current span {
-  display: block;
-  font-size: 2em;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.current small {
-  color: #888;
-  font-style: italic;
-}
-
-form {
-  display: flex;
-  margin-bottom: 2rem;
-  border: 1px solid #aaa;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  transition: 200ms linear;
-}
-
-form:focus-within,
-form:hover {
-  border-color: #008000;
-  border-width: 2px;
-}
-
-form input[type="number"] {
-  appearance: none;
-  outline: none;
-  border: none;
-  background-color: white;
-
-  flex: 1 1 0%;
-  padding: 1rem 1.5rem;
-  font-size: 1.25rem;
-}
-
-form input[type="submit"] {
-  appearance: none;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  background-color: #008000;
-
-  padding: 0.5rem 1rem;
-
-  color: white;
-  font-size: 1.25rem;
-  font-weight: 700;
-  transition: 200ms linear;
-  border-left: 3px solid transparent;
-}
-
-form input[type="submit"]:hover {
-  background-color: white;
-  color: #008000;
-  border-left-color: #008000;
-}
-
-.canvas-box {
-  width: 100%;
-  max-width: 720px;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-}
-
-.weight-history ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.weight-history ul li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-.weight-history ul li:nth-child(even) {
-  background-color: #dfdfdf;
-}
-
-.weight-history ul li:hover {
-  background-color: #f8f8f8;
-}
-
-.weight-history ul li:last-of-type {
-  border-bottom: none;
-}
-
-.weight-history ul li span {
-  display: block;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-right: 1rem;
-}
-
-.weight-history ul li small {
-  color: #888;
-  font-style: italic;
+.list-item:last-of-type {
+  @apply border-b-0;
 }
 </style>
