@@ -1,7 +1,59 @@
-# Vue 3 + Vite
+# Weight Tracker
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A Vue.js application that allows users to track and visualize their weight over time. The application provides a simple interface to input weight, view the current weight, and see a historical chart of weight entries.
 
-## Recommended IDE Setup
+## Features
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- **Add Weight Entries**: Users can easily input their current weight.
+- **Visualize Weight Progress**: A line chart visualizes the weight history over time.
+- **Current Weight Display**: The most recent weight entry is prominently displayed.
+- **Weight History**: A list of all weight entries with dates.
+- **Reset Functionality**: Users can reset their weight history.
+- **Responsive Design**: The application is designed to be mobile-friendly.
+
+## Live Demo
+
+[Click here](https://vue-weight-tracker-vert.vercel.app/) to see the live demo of the project.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+```
+git clone https://github.com/md-arif-islam/vue-weight-tracker.git
+```
+
+2. Navigate to the project directory:
+
+```
+cd vue-weight-tracker
+```
+
+3. Install the dependencies:
+
+```
+npm install
+```
+
+4. Start the development server:
+
+```
+npm run serve
+```
+
+5. Open your browser and navigate to `http://localhost:8080`.
+
+## Built With
+
+- [Vue.js](https://vuejs.org/)
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
